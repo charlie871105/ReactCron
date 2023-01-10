@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import './App.css';
+import { Box } from '@mui/material';
+import ReactCron from './ReactCron';
 
 function App() {
-  const [count, setCount] = useState(0);
-  return <div className="App">Hello World</div>;
+  return (
+    <Box display="flex" justifyContent="center" alignItems="center">
+      <ReactCron />
+    </Box>
+  );
 }
 
 export default App;
