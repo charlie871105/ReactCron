@@ -1,3 +1,5 @@
+export type CronMode = 'daily' | 'weekly' | 'monthly' | 'advance';
+
 type DailyState = {
   hours: string[],
   minutes: string[],
@@ -23,11 +25,7 @@ export interface CronState {
   advance: string;
 }
 
-export type CronAction =
-  | { type: 'set_daily' }
-  | { type: 'set_weekly' }
-  | { type: 'set_monthly' }
-  | { type: 'set_advance' }
+export type CronChangeEvent =
   | { type: 'change_daily', payload: DailyState }
   | { type: 'change_weekly', payload: WeeklyState }
   | { type: 'change_monthly', payload: MonthlyState }
@@ -35,5 +33,6 @@ export type CronAction =
 
 export interface ReactCronContextType {
   state: CronState;
-  dispatch: React.Dispatch<CronAction>;
+  dispatch: React.Dispatch<CronChangeEvent>;
+  onChange: (cron: string) => void;
 }

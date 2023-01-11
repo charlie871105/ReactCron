@@ -1,11 +1,14 @@
-import { Box } from '@mui/material';
+import { Box, ThemeProvider } from '@mui/material';
 import ReactCron from './ReactCron';
+import { DefaultTheme } from './Theme';
 
 function App() {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-      <ReactCron />
-    </Box>
+    <ThemeProvider theme={DefaultTheme}>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <ReactCron onChange={(cron) => console.log(cron)} />
+      </Box>
+    </ThemeProvider>
   );
 }
 
