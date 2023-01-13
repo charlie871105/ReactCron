@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 import React, { useContext } from 'react';
 import { ReactCronContext } from '../../ReactCronContext';
-import { ReactCronContextType } from '../../type';
 import { toCron } from '../../util';
 import { TimeSelect } from '../TimeSelect';
 
@@ -15,12 +14,11 @@ export function Daily() {
 
   return (
     <Box
-      height="400px"
-      padding="30px"
+      height="404px"
       display="flex"
       flexDirection="column"
       alignItems="center"
-      gap="60px"
+      gap="28px"
     >
       <TimeSelect
         mode="muti"

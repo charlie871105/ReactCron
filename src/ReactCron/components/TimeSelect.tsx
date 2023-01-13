@@ -17,16 +17,16 @@ import { TimeField } from './TimeField';
 
 type TimeSelectProps =
   | {
-      value: string[],
-      onChange: (value: string[]) => void,
-      type: 'hour' | 'minute',
-      mode: 'muti',
+      value: string[];
+      onChange: (value: string[]) => void;
+      type: 'hour' | 'minute';
+      mode: 'muti';
     }
   | {
-      value: string,
-      onChange: (value: string) => void,
-      type: 'hour' | 'minute',
-      mode: 'single',
+      value: string;
+      onChange: (value: string) => void;
+      type: 'hour' | 'minute';
+      mode: 'single';
     };
 
 export function TimeSelect({ mode, type, value, onChange }: TimeSelectProps) {
@@ -35,6 +35,7 @@ export function TimeSelect({ mode, type, value, onChange }: TimeSelectProps) {
   const options = type === 'hour' ? HOURS : MINUTES;
   const label = type === 'hour' ? 'Choose Hour' : 'Choose Minute';
   const everyTime = type === 'hour' ? 'hourly' : 'minutely';
+  const unit = type === 'hour' ? 'h' : 'm';
 
   const handleMutiValue = (
     event: React.MouseEvent<HTMLElement>,
@@ -73,11 +74,13 @@ export function TimeSelect({ mode, type, value, onChange }: TimeSelectProps) {
       <InputLabel>{t(label)}</InputLabel>
       <TimeField
         size="small"
-        sx={{ width: '240px' }}
+        sx={{ width: '250px' }}
         value={
           value.length === 0
-            ? t(everyTime)
-            : `${formatDaily(value)}${value.length > 6 ? ' ...' : ''}`
+            ? `${t(everyTime)}`
+            : `${formatDaily(value)}${
+                value.length > 6 ? `... ${t(unit)}` : ` ${t(unit)}`
+              }`
         }
         onClick={openSelection}
         InputProps={{
@@ -111,7 +114,7 @@ export function TimeSelect({ mode, type, value, onChange }: TimeSelectProps) {
           horizontal: 'center',
         }}
       >
-        <Box width="240px" paddingLeft="2px">
+        <Box width="250px" padding="5px" boxSizing="border-box">
           <ToggleButtonGroup
             color="primary"
             exclusive={mode === 'single'}
@@ -125,7 +128,7 @@ export function TimeSelect({ mode, type, value, onChange }: TimeSelectProps) {
                 marginLeft: '0px !important',
                 boxSizing: 'border-box',
                 width: '38px',
-                height: '38px',
+                height: '20px',
                 margin: '2px',
                 border: 'none',
                 borderRadius: '5px',
@@ -133,7 +136,7 @@ export function TimeSelect({ mode, type, value, onChange }: TimeSelectProps) {
               '.MuiToggleButtonGroup-grouped:not(:last-of-type)': {
                 boxSizing: 'border-box',
                 width: '38px',
-                height: '38px',
+                height: '20px',
                 margin: '2px',
                 border: 'none',
                 borderRadius: '5px',

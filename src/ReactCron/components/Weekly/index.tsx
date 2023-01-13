@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 import React, { useContext } from 'react';
 import { ReactCronContext } from '../../ReactCronContext';
-import { ReactCronContextType } from '../../type';
 import { toCron } from '../../util';
 import { TimeSelect } from '../TimeSelect';
 import { WeekSelect } from '../WeekSelect';
@@ -16,12 +15,11 @@ export function Weekly() {
 
   return (
     <Box
-      height="400px"
-      padding="30px"
+      height="404px"
       display="flex"
       flexDirection="column"
       alignItems="center"
-      gap="30px"
+      gap="28px"
     >
       <WeekSelect
         value={weekly.dates}

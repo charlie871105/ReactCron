@@ -7,16 +7,16 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { WEEK } from '../util';
+import { MONTH } from '../util';
 
-type WeekSelectProps = {
+type MonthSelectProps = {
   value: string[];
   onChange: (value: string[]) => void;
 };
-export function WeekSelect({ value, onChange }: WeekSelectProps) {
+export function MonthSelect({ value, onChange }: MonthSelectProps) {
   const { t } = useTranslation();
 
-  const handleWeek = (
+  const handleMonth = (
     event: React.MouseEvent<HTMLElement>,
     dates: string[]
   ) => {
@@ -27,7 +27,7 @@ export function WeekSelect({ value, onChange }: WeekSelectProps) {
 
   return (
     <Box>
-      <InputLabel>{t('Choose Week')}</InputLabel>
+      <InputLabel>{t('Choose Month')}</InputLabel>
       <Paper
         elevation={0}
         sx={{
@@ -35,7 +35,8 @@ export function WeekSelect({ value, onChange }: WeekSelectProps) {
           justifyContent: 'center',
           alignItems: 'center',
           width: '250px',
-          paddingY: '4px',
+          paddingY: '2px',
+          paddingLeft: '4px',
           border: '1px solid',
           borderColor: 'divider',
         }}
@@ -43,25 +44,27 @@ export function WeekSelect({ value, onChange }: WeekSelectProps) {
         <ToggleButtonGroup
           color="primary"
           value={value}
-          onChange={handleWeek}
+          onChange={handleMonth}
           sx={{
             display: 'flex',
+            flexWrap: 'wrap',
+            width: '238px',
             '.MuiToggleButtonGroup-grouped:not(:first-of-type)': {
               marginLeft: '0px !important',
               boxSizing: 'border-box',
-              border: 'none',
-              margin: '4px',
-              borderRadius: '5px',
               width: '30px',
               height: '30px',
+              margin: '4px',
+              border: 'none',
+              borderRadius: '5px',
             },
             '.MuiToggleButtonGroup-grouped:not(:last-of-type)': {
               boxSizing: 'border-box',
-              border: 'none',
-              margin: '4px',
-              borderRadius: '5px',
               width: '30px',
               height: '30px',
+              margin: '4px',
+              border: 'none',
+              borderRadius: '5px',
             },
             '.MuiToggleButtonGroup-grouped:first-of-type': {
               boxSizing: 'border-box',
@@ -69,13 +72,14 @@ export function WeekSelect({ value, onChange }: WeekSelectProps) {
             },
           }}
         >
-          {WEEK.map((date) => (
+          {MONTH.map((date) => (
             <ToggleButton
-              key={date.value}
+              sx={{ margin: '5px' }}
+              key={date}
               disableRipple={true}
-              value={`${date.value}`}
+              value={date}
             >
-              {t(date.label)}
+              {date}
             </ToggleButton>
           ))}
         </ToggleButtonGroup>

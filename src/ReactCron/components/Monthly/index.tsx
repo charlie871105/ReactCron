@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import React, { useContext } from 'react';
 import { ReactCronContext } from '../../ReactCronContext';
-import { ReactCronContextType } from '../../type';
 import { toCron } from '../../util';
+import { MonthSelect } from '../MonthSelect';
 import { TimeSelect } from '../TimeSelect';
 
 export function Monthly() {
@@ -11,47 +11,85 @@ export function Monthly() {
     throw new Error('Unknow Context');
   }
   const { state, dispatch, onChange } = context;
-  const { daily } = state;
+  const { monthly } = state;
 
   return (
     <Box
-      height="400px"
-      padding="30px"
+      height="404px"
       display="flex"
       flexDirection="column"
       alignItems="center"
-      gap="60px"
+      gap="28px"
     >
-      <TimeSelect
-        mode="muti"
-        type="hour"
-        value={daily.hours}
+      <MonthSelect
+        value={monthly.dates}
         onChange={(value) => {
           dispatch({
-            type: 'change_daily',
-            payload: { hours: value, minutes: daily.minutes },
+            type: 'change_monthly',
+            payload: {
+              dates: value,
+              hour: monthly.hour,
+              minute: monthly.minute,
+            },
           });
           onChange(
             toCron({
-              type: 'change_daily',
-              payload: { hours: value, minutes: daily.minutes },
+              type: 'change_monthly',
+              payload: {
+                dates: value,
+                hour: monthly.hour,
+                minute: monthly.minute,
+              },
             })
           );
         }}
       />
       <TimeSelect
-        mode="muti"
-        type="minute"
-        value={daily.minutes}
+        mode="single"
+        type="hour"
+        value={monthly.hour}
         onChange={(value) => {
           dispatch({
-            type: 'change_daily',
-            payload: { minutes: value, hours: daily.hours },
+            type: 'change_monthly',
+            payload: {
+              dates: monthly.dates,
+              hour: value,
+              minute: monthly.minute,
+            },
           });
           onChange(
             toCron({
-              type: 'change_daily',
-              payload: { minutes: value, hours: daily.hours },
+              type: 'change_monthly',
+              payload: {
+                dates: monthly.dates,
+                hour: value,
+                minute: monthly.minute,
+              },
+            })
+          );
+        }}
+      />
+      <TimeSelect
+        mode="single"
+        type="minute"
+        value={monthly.minute}
+        onChange={(value) => {
+          dispatch({
+            type: 'change_monthly',
+            payload: {
+              dates: monthly.dates,
+              hour: monthly.hour,
+              minute: value,
+            },
+          });
+          onChange(
+            toCron({
+              type: 'change_monthly',
+              payload: {
+                dates: monthly.dates,
+                hour: monthly.hour,
+                minute: value,
+              },
             })
           );
         }}

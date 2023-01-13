@@ -1,20 +1,20 @@
 export type CronMode = 'daily' | 'weekly' | 'monthly' | 'advance';
 
 type DailyState = {
-  hours: string[],
-  minutes: string[],
+  hours: string[];
+  minutes: string[];
 };
 
 type WeeklyState = {
-  dates: string[],
-  hour: string,
-  minute: string,
+  dates: string[];
+  hour: string;
+  minute: string;
 };
 
 type MonthlyState = {
-  dates: string[],
-  hour: string,
-  minute: string,
+  dates: string[];
+  hour: string;
+  minute: string;
 };
 
 export interface CronState {
@@ -26,10 +26,14 @@ export interface CronState {
 }
 
 export type CronChangeEvent =
-  | { type: 'change_daily', payload: DailyState }
-  | { type: 'change_weekly', payload: WeeklyState }
-  | { type: 'change_monthly', payload: MonthlyState }
-  | { type: 'change_advance', payload: string };
+  | { type: 'change_daily'; payload: DailyState }
+  | { type: 'change_weekly'; payload: WeeklyState }
+  | { type: 'change_monthly'; payload: MonthlyState }
+  | { type: 'change_advance'; payload: string }
+  | { type: 'set_daily' }
+  | { type: 'set_weekly' }
+  | { type: 'set_monthly' }
+  | { type: 'set_advance' };
 
 export interface ReactCronContextType {
   state: CronState;

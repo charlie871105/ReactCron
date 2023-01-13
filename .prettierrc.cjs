@@ -1,5 +1,5 @@
 module.exports = {
     singleQuote: true,
-    parser: "flow"
+    parser: "typescript"
 
   };

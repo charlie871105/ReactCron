@@ -1,9 +1,8 @@
-import { Box } from '@mui/material';
+import { Box, InputLabel, TextField } from '@mui/material';
+import { t } from 'i18next';
 import React, { useContext } from 'react';
 import { ReactCronContext } from '../../ReactCronContext';
-import { ReactCronContextType } from '../../type';
 import { toCron } from '../../util';
-import { TimeSelect } from '../TimeSelect';
 
 export function Advance() {
   const context = useContext(ReactCronContext);
@@ -11,51 +10,36 @@ export function Advance() {
     throw new Error('Unknow Context');
   }
   const { state, dispatch, onChange } = context;
-  const { daily } = state;
+  const { advance } = state;
 
   return (
     <Box
-      height="400px"
-      padding="30px"
+      height="404px"
       display="flex"
       flexDirection="column"
       alignItems="center"
-      gap="60px"
+      gap="28px"
     >
-      <TimeSelect
-        mode="muti"
-        type="hour"
-        value={daily.hours}
-        onChange={(value) => {
-          dispatch({
-            type: 'change_daily',
-            payload: { hours: value, minutes: daily.minutes },
-          });
-          onChange(
-            toCron({
-              type: 'change_daily',
-              payload: { hours: value, minutes: daily.minutes },
-            })
-          );
-        }}
-      />
-      <TimeSelect
-        mode="muti"
-        type="minute"
-        value={daily.minutes}
-        onChange={(value) => {
-          dispatch({
-            type: 'change_daily',
-            payload: { minutes: value, hours: daily.hours },
-          });
-          onChange(
-            toCron({
-              type: 'change_daily',
-              payload: { minutes: value, hours: daily.hours },
-            })
-          );
-        }}
-      />
+      <Box>
+        <InputLabel>{t('CronExpression')}</InputLabel>
+        <TextField
+          sx={{ width: '250px' }}
+          size="small"
+          value={advance}
+          onChange={(e) => {
+            dispatch({
+              type: 'change_advance',
+              payload: e.target.value,
+            });
+            onChange(
+              toCron({
+                type: 'change_advance',
+                payload: e.target.value,
+              })
+            );
+          }}
+        />
+      </Box>
     </Box>
   );
 }

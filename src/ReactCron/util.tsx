@@ -1,4 +1,7 @@
+import cronstrue from 'cronstrue';
+import { useTranslation } from 'react-i18next';
 import { CronChangeEvent, CronMode } from './type';
+import 'cronstrue/locales/zh_TW';
 
 export const HOURS = [
   '00',
@@ -99,6 +102,40 @@ export const WEEK = [
   { value: 6, label: 'Sat.' },
 ];
 
+export const MONTH = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+  '24',
+  '25',
+  '26',
+  '27',
+  '28',
+  '29',
+  '30',
+  '31',
+];
+
 export const FREQUENCY_TYPE: CronMode[] = [
   'daily',
   'weekly',
@@ -182,4 +219,41 @@ export function getCurrentTime(type: 'hour' | 'minute' | 'week' | 'date') {
     default:
       throw new Error('Unknow gettime type');
   }
+}
+
+export function useReadableCron(cron: string) {
+  let locale = 'en';
+  const { t, i18n } = useTranslation();
+
+  if (i18n.languages.includes('zh')) {
+    locale = 'zh_TW';
+  }
+
+  let readableCron: string;
+  try {
+    readableCron = cronstrue.toString(cron, {
+      locale,
+      use24HourTimeFormat: true,
+    });
+  } catch (error) {
+    readableCron = t('CronExpression is not vaild');
+  }
+  return readableCron;
+}
+
+export function isCronVaild(cron: string) {
+  let isVaild = true;
+  try {
+    cronstrue.toString(cron);
+  } catch (error) {
+    isVaild = false;
+  }
+  return isVaild;
+}
+
+export function formatLabel(str: string, num: number) {
+  if (str.length > num) {
+    return str.substring(0, num) + '...';
+  }
+  return str;
 }

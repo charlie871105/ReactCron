@@ -7,9 +7,10 @@ import { CronMode } from './type';
 import { FREQUENCY_DEFAULT, FREQUENCY_TYPE, toCron } from './util';
 import { Daily, Weekly, Monthly, Advance } from './components';
 import './i18n';
+import ReadableCronLabel from './components/ReadableCronLabel';
 
 export type ReactCronProps = {
-  onChange: (cron: string) => void,
+  onChange: (cron: string) => void;
 };
 
 function ReactCron({ onChange }: ReactCronProps) {
@@ -19,7 +20,7 @@ function ReactCron({ onChange }: ReactCronProps) {
 
   const [state, dispatch] = useReducer(cronReducer, FREQUENCY_DEFAULT);
 
-  const { daily, weekly, monthly, advance } = state;
+  const { cron, daily, weekly, monthly, advance } = state;
 
   const contextValue = useMemo(
     () => ({ state, dispatch, onChange }),
@@ -30,6 +31,7 @@ function ReactCron({ onChange }: ReactCronProps) {
     setTab(mode);
     switch (mode) {
       case 'daily':
+        dispatch({ type: 'set_daily' });
         onChange(
           toCron({
             type: 'change_daily',
@@ -38,6 +40,7 @@ function ReactCron({ onChange }: ReactCronProps) {
         );
         break;
       case 'weekly':
+        dispatch({ type: 'set_weekly' });
         onChange(
           toCron({
             type: 'change_weekly',
@@ -50,6 +53,7 @@ function ReactCron({ onChange }: ReactCronProps) {
         );
         break;
       case 'monthly':
+        dispatch({ type: 'set_weekly' });
         onChange(
           toCron({
             type: 'change_monthly',
@@ -62,6 +66,7 @@ function ReactCron({ onChange }: ReactCronProps) {
         );
         break;
       case 'advance':
+        dispatch({ type: 'set_advance' });
         onChange(
           toCron({
             type: 'change_advance',
@@ -83,6 +88,9 @@ function ReactCron({ onChange }: ReactCronProps) {
           flexDirection: 'column',
           border: '1px solid',
           borderColor: 'divider',
+          alignItems: 'center',
+          gap: '28px',
+          pb: '28px',
         }}
         variant="outlined"
         elevation={0}
@@ -97,6 +105,8 @@ function ReactCron({ onChange }: ReactCronProps) {
             />
           ))}
         </Tabs>
+
+        <ReadableCronLabel cron={cron} />
 
         {tab === 'daily' && <Daily />}
         {tab === 'weekly' && <Weekly />}

@@ -1058,6 +1058,11 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
+cronstrue@^2.21.0:
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/cronstrue/-/cronstrue-2.21.0.tgz#278d19aa0b9e7ecc90a0c1dbd4f84ceece724094"
+  integrity sha512-YxabE1ZSHA1zJZMPCTSEbc0u4cRRenjqqTgCwJT7OvkspPSvfYFITuPFtsT+VkBuavJtFv2kJXT+mKSnlUJxfg==
+
 cross-spawn@^7.0.2:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
