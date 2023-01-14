@@ -257,3 +257,56 @@ export function formatLabel(str: string, num: number) {
   }
   return str;
 }
+
+export function isDailyCron(cron: string) {
+  // 先排除不是合法的cronExpression
+  if (!isCronVaild(cron)) return false;
+  const cronArray = cron.split(' ');
+  // [00-59,00-59... || *] [00-23,00-23... || *] * * * 符合每天的頻率格式
+  if (
+    /^((([0-5]?[0-9]),)*([0-5]?[0-9])|(\*))$/.test(cronArray[0]) &&
+    /^(((2[0-3]|1[0-9]|[0]?[0-9]),)*(2[0-3]|1[0-9]|0[0-9]|[0-9])|(\*))$/.test(
+      cronArray[1]
+    ) &&
+    cronArray[2] === '*' &&
+    cronArray[3] === '*' &&
+    cronArray[4] === '*'
+  ) {
+    return true;
+  }
+  return false;
+}
+
+export function isWeeklyCron(cronExpression: string) {
+  if (!isCronVaild(cronExpression)) return false;
+  const cronArray = cronExpression.split(' ');
+  // 只要 0-59 0-23 * * [0-6,....]  就是每週的頻率
+  if (
+    /^([0-5]?[0-9])$/.test(cronArray[0]) &&
+    /^(2[0-3]|1[0-9]|[0]?[0-9])$/.test(cronArray[1]) &&
+    cronArray[2] === '*' &&
+    cronArray[3] === '*' &&
+    cronArray[4].split(',').every((day) => /([0]?[0-6])/.test(day))
+  )
+    return true;
+
+  return false;
+}
+
+export function isMonthlyCron(cronExpression: string) {
+  if (!isCronVaild(cronExpression)) return false;
+  const cronArray = cronExpression.split(' ');
+  // 只要 0-59 0-23 [1-31,....] * *   就是每週的頻率
+  if (
+    /^([0-5]?[0-9])$/.test(cronArray[0]) &&
+    /^(2[0-3]|1[0-9]|0[0-9]|[0-9])$/.test(cronArray[1]) &&
+    cronArray[2]
+      .split(',')
+      .every((date) => /3[01]|[12][0-9]|[0]?[1-9]/.test(date)) &&
+    cronArray[3] === '*' &&
+    cronArray[4] === '*'
+  )
+    return true;
+
+  return false;
+}
