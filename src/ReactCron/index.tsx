@@ -29,6 +29,7 @@ function ReactCron({ initValue = '* * * * *', onChange }: ReactCronProps) {
   const [state, dispatch] = useReducer(cronReducer, {
     ...FREQUENCY_DEFAULT,
     ...initFreq,
+    cron: initValue,
   });
 
   const { cron, daily, weekly, monthly, advance } = state;

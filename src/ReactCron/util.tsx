@@ -221,16 +221,16 @@ export function getCurrentTime(type: 'hour' | 'minute' | 'week' | 'date') {
   const today = new Date(Date.now());
   switch (type) {
     case 'hour':
-      return `${today.getHours()}`;
+      return formatTime(`${today.getHours()}`);
 
     case 'minute':
-      return `${today.getMinutes()}`;
+      return formatTime(`${today.getMinutes()}`);
 
     case 'week':
-      return `${today.getDay()}`;
+      return formatTime(`${today.getDay()}`);
 
     case 'date':
-      return `${today.getDate()}`;
+      return formatTime(`${today.getDate()}`);
 
     default:
       throw new Error('Unknow gettime type');
