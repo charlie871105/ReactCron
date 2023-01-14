@@ -10,7 +10,7 @@ describe('isCronVaild', () => {
   });
 
   test('error cron', () => {
-    let input = '* * * *';
+    let input = ' * * * * ';
     let actual: boolean = isCronVaild(input);
     let expected = false;
 

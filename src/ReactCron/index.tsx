@@ -4,21 +4,31 @@ import { useTranslation } from 'react-i18next';
 import { ReactCronContext } from './ReactCronContext';
 import { cronReducer } from './reducer';
 import { CronMode } from './type';
-import { FREQUENCY_DEFAULT, FREQUENCY_TYPE, toCron } from './util';
+import {
+  convertInitCron,
+  FREQUENCY_DEFAULT,
+  FREQUENCY_TYPE,
+  toCron,
+} from './util';
 import { Daily, Weekly, Monthly, Advance } from './components';
 import './i18n';
 import ReadableCronLabel from './components/ReadableCronLabel';
 
 export type ReactCronProps = {
+  initValue?: string;
   onChange: (cron: string) => void;
 };
 
-function ReactCron({ onChange }: ReactCronProps) {
-  const [tab, setTab] = useState('daily');
+function ReactCron({ initValue = '* * * * *', onChange }: ReactCronProps) {
+  const [initType, initFreq] = convertInitCron(initValue);
+  const [tab, setTab] = useState(initType);
 
   const { t } = useTranslation();
 
-  const [state, dispatch] = useReducer(cronReducer, FREQUENCY_DEFAULT);
+  const [state, dispatch] = useReducer(cronReducer, {
+    ...FREQUENCY_DEFAULT,
+    ...initFreq,
+  });
 
   const { cron, daily, weekly, monthly, advance } = state;
 

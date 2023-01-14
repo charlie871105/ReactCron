@@ -1,17 +1,27 @@
 export type CronMode = 'daily' | 'weekly' | 'monthly' | 'advance';
 
-type DailyState = {
+export type InitValue = [
+  CronMode,
+  (
+    | { daily: DailyState }
+    | { weekly: WeeklyState }
+    | { monthly: MonthlyState }
+    | { advance: string }
+  )
+];
+
+export type DailyState = {
   hours: string[];
   minutes: string[];
 };
 
-type WeeklyState = {
+export type WeeklyState = {
   dates: string[];
   hour: string;
   minute: string;
 };
 
-type MonthlyState = {
+export type MonthlyState = {
   dates: string[];
   hour: string;
   minute: string;

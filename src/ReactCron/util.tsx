@@ -1,6 +1,13 @@
 import cronstrue from 'cronstrue';
 import { useTranslation } from 'react-i18next';
-import { CronChangeEvent, CronMode } from './type';
+import {
+  CronChangeEvent,
+  CronMode,
+  DailyState,
+  InitValue,
+  MonthlyState,
+  WeeklyState,
+} from './type';
 import 'cronstrue/locales/zh_TW';
 
 export const HOURS = [
@@ -93,25 +100,25 @@ export const MINUTES = [
 ];
 
 export const WEEK = [
-  { value: 0, label: 'Sun.' },
-  { value: 1, label: 'Mon.' },
-  { value: 2, label: 'Tues.' },
-  { value: 3, label: 'Wed.' },
-  { value: 4, label: 'Thurs.' },
-  { value: 5, label: 'Fri.' },
-  { value: 6, label: 'Sat.' },
+  { value: '00', label: 'Sun.' },
+  { value: '01', label: 'Mon.' },
+  { value: '02', label: 'Tues.' },
+  { value: '03', label: 'Wed.' },
+  { value: '04', label: 'Thurs.' },
+  { value: '05', label: 'Fri.' },
+  { value: '06', label: 'Sat.' },
 ];
 
 export const MONTH = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+  '09',
   '10',
   '11',
   '12',
@@ -159,10 +166,16 @@ export const FREQUENCY_DEFAULT = {
   advance: '* * * * *',
 };
 
+/** 
+  change time array to cron string
+*/
 export function toCronTime<T>(time: T[]) {
   return time.length === 0 ? '*' : time.join(',');
 }
 
+/** 
+  used to trim too long input value to show
+*/
 export function formatDaily(time: string[] | string) {
   if (typeof time === 'string') {
     return time;
@@ -176,6 +189,9 @@ export function formatDaily(time: string[] | string) {
   return trimed.join(',');
 }
 
+/** 
+ accept cron changeEvent and return cronExpression
+*/
 export function toCron(event: CronChangeEvent) {
   switch (event.type) {
     case 'change_daily':
@@ -243,11 +259,17 @@ export function useReadableCron(cron: string) {
 
 export function isCronVaild(cron: string) {
   let isVaild = true;
+  let cronArray: string[] = [];
   try {
     cronstrue.toString(cron);
+    cronArray = cron.split(' ');
+    if (cronArray.length !== 5) {
+      isVaild = false;
+    }
   } catch (error) {
     isVaild = false;
   }
+
   return isVaild;
 }
 
@@ -277,9 +299,9 @@ export function isDailyCron(cron: string) {
   return false;
 }
 
-export function isWeeklyCron(cronExpression: string) {
-  if (!isCronVaild(cronExpression)) return false;
-  const cronArray = cronExpression.split(' ');
+export function isWeeklyCron(cron: string) {
+  if (!isCronVaild(cron)) return false;
+  const cronArray = cron.split(' ');
   // 只要 0-59 0-23 * * [0-6,....]  就是每週的頻率
   if (
     /^([0-5]?[0-9])$/.test(cronArray[0]) &&
@@ -293,10 +315,10 @@ export function isWeeklyCron(cronExpression: string) {
   return false;
 }
 
-export function isMonthlyCron(cronExpression: string) {
-  if (!isCronVaild(cronExpression)) return false;
-  const cronArray = cronExpression.split(' ');
-  // 只要 0-59 0-23 [1-31,....] * *   就是每週的頻率
+export function isMonthlyCron(cron: string) {
+  if (!isCronVaild(cron)) return false;
+  const cronArray = cron.split(' ');
+  // 只要 0-59 0-23 [1-31,....] * *   is match monthly
   if (
     /^([0-5]?[0-9])$/.test(cronArray[0]) &&
     /^(2[0-3]|1[0-9]|0[0-9]|[0-9])$/.test(cronArray[1]) &&
@@ -309,4 +331,86 @@ export function isMonthlyCron(cronExpression: string) {
     return true;
 
   return false;
+}
+
+/** 
+ check the time array is every time
+ ex: [1,*,9] => with * => everytime
+*/
+export function isEveryTime(timeArray: string[]) {
+  return timeArray.some((hour) => hour === '*');
+}
+
+/** 
+ fromat time to match toggle button
+ toggle button only acept 00 - 09
+*/
+export function formatTime(time: string) {
+  let parsedTime = parseInt(time, 10);
+  if (parsedTime < 10) {
+    return `0${parsedTime}`;
+  }
+  return `${parsedTime}`;
+}
+
+/** 
+ remove duplicate time and format time to match toggle button
+*/
+export function formatTimeArray(timeArray: string[]) {
+  let timeSet = new Set(timeArray);
+  return Array.from(timeSet).map((time) => formatTime(time));
+}
+
+export function converseDaily(cronArray: string[]): DailyState {
+  let hourArray = cronArray[1].split(',');
+  let minuteArray = cronArray[0].split(',');
+
+  return {
+    hours: isEveryTime(hourArray) ? [] : formatTimeArray(hourArray),
+    minutes: isEveryTime(minuteArray) ? [] : formatTimeArray(minuteArray),
+  };
+}
+
+export function converseWeekly(cronArray: string[]): WeeklyState {
+  let weekArray = cronArray[4].split(',');
+  let hour = formatTime(cronArray[1]);
+  let minute = formatTime(cronArray[0]);
+
+  return {
+    dates: isEveryTime(weekArray) ? [] : formatTimeArray(weekArray),
+    hour,
+    minute,
+  };
+}
+
+export function converseMonthly(cronArray: string[]): MonthlyState {
+  let monthArray = cronArray[2].split(',');
+  let hour = formatTime(cronArray[1]);
+  let minute = formatTime(cronArray[0]);
+
+  return {
+    dates: isEveryTime(monthArray) ? [] : formatTimeArray(monthArray),
+    hour,
+    minute,
+  };
+}
+
+/**
+  convert input value to init value
+*/
+export function convertInitCron(cron = '* * * * *'): InitValue {
+  // invalid cron
+  if (!isCronVaild(cron)) return ['advance', { advance: cron }];
+
+  const cronArray = cron.split(' ');
+
+  if (isDailyCron(cron)) return ['daily', { daily: converseDaily(cronArray) }];
+
+  if (isWeeklyCron(cron))
+    return ['weekly', { weekly: converseWeekly(cronArray) }];
+
+  if (isMonthlyCron(cron))
+    return ['monthly', { monthly: converseMonthly(cronArray) }];
+
+  return ['advance', { advance: cron }];
 }
