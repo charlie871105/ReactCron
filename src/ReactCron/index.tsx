@@ -3,11 +3,12 @@ import React, { useMemo, useReducer, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ReactCronContext } from './ReactCronContext';
 import { cronReducer } from './reducer';
-import { CronMode } from './type';
+import { CronMode, UserOnChange } from './type';
 import {
   convertInitCron,
   FREQUENCY_DEFAULT,
   FREQUENCY_TYPE,
+  isCronVaild,
   toCron,
 } from './util';
 import { Daily, Weekly, Monthly, Advance } from './components';
@@ -16,7 +17,7 @@ import ReadableCronLabel from './components/ReadableCronLabel';
 
 export type ReactCronProps = {
   initValue?: string;
-  onChange: (cron: string) => void;
+  onChange: UserOnChange;
 };
 
 function ReactCron({ initValue = '* * * * *', onChange }: ReactCronProps) {
@@ -46,7 +47,8 @@ function ReactCron({ initValue = '* * * * *', onChange }: ReactCronProps) {
           toCron({
             type: 'change_daily',
             payload: { hours: daily.hours, minutes: daily.minutes },
-          })
+          }),
+          false
         );
         break;
       case 'weekly':
@@ -59,7 +61,8 @@ function ReactCron({ initValue = '* * * * *', onChange }: ReactCronProps) {
               hour: weekly.hour,
               minute: weekly.minute,
             },
-          })
+          }),
+          false
         );
         break;
       case 'monthly':
@@ -72,7 +75,8 @@ function ReactCron({ initValue = '* * * * *', onChange }: ReactCronProps) {
               hour: monthly.hour,
               minute: monthly.minute,
             },
-          })
+          }),
+          false
         );
         break;
       case 'advance':
@@ -81,7 +85,13 @@ function ReactCron({ initValue = '* * * * *', onChange }: ReactCronProps) {
           toCron({
             type: 'change_advance',
             payload: advance,
-          })
+          }),
+          !isCronVaild(
+            toCron({
+              type: 'change_advance',
+              payload: advance,
+            })
+          )
         );
         break;
 

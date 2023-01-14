@@ -40,7 +40,8 @@ export function Monthly() {
                 hour: monthly.hour,
                 minute: monthly.minute,
               },
-            })
+            }),
+            false
           );
         }}
       />
@@ -65,7 +66,8 @@ export function Monthly() {
                 hour: value,
                 minute: monthly.minute,
               },
-            })
+            }),
+            false
           );
         }}
       />
@@ -90,7 +92,8 @@ export function Monthly() {
                 hour: monthly.hour,
                 minute: value,
               },
-            })
+            }),
+            false
           );
         }}
       />

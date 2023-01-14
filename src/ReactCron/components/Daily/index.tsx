@@ -33,7 +33,8 @@ export function Daily() {
             toCron({
               type: 'change_daily',
               payload: { hours: value, minutes: daily.minutes },
-            })
+            }),
+            false
           );
         }}
       />
@@ -50,7 +51,8 @@ export function Daily() {
             toCron({
               type: 'change_daily',
               payload: { minutes: value, hours: daily.hours },
-            })
+            }),
+            false
           );
         }}
       />

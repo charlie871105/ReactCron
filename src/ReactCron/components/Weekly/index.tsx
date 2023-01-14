@@ -36,7 +36,8 @@ export function Weekly() {
                 hour: weekly.hour,
                 minute: weekly.minute,
               },
-            })
+            }),
+            false
           );
         }}
       />
@@ -61,7 +62,8 @@ export function Weekly() {
                 hour: value,
                 minute: weekly.minute,
               },
-            })
+            }),
+            false
           );
         }}
       />
@@ -86,7 +88,8 @@ export function Weekly() {
                 hour: weekly.hour,
                 minute: value,
               },
-            })
+            }),
+            false
           );
         }}
       />

@@ -2,7 +2,7 @@ import { Box, InputLabel, TextField } from '@mui/material';
 import { t } from 'i18next';
 import React, { useContext } from 'react';
 import { ReactCronContext } from '../../ReactCronContext';
-import { toCron } from '../../util';
+import { isCronVaild, toCron } from '../../util';
 
 export function Advance() {
   const context = useContext(ReactCronContext);
@@ -26,6 +26,7 @@ export function Advance() {
           sx={{ width: '250px' }}
           size="small"
           value={advance}
+          error={!isCronVaild(advance)}
           onChange={(e) => {
             dispatch({
               type: 'change_advance',
@@ -35,7 +36,13 @@ export function Advance() {
               toCron({
                 type: 'change_advance',
                 payload: e.target.value,
-              })
+              }),
+              !isCronVaild(
+                toCron({
+                  type: 'change_advance',
+                  payload: e.target.value,
+                })
+              )
             );
           }}
         />

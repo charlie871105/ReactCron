@@ -245,15 +245,15 @@ export function useReadableCron(cron: string) {
     locale = 'zh_TW';
   }
 
-  let readableCron: string;
-  try {
-    readableCron = cronstrue.toString(cron, {
-      locale,
-      use24HourTimeFormat: true,
-    });
-  } catch (error) {
-    readableCron = t('CronExpression is not vaild');
+  if (!isCronVaild(cron)) {
+    return t('CronExpression is not vaild');
   }
+
+  let readableCron = cronstrue.toString(cron, {
+    locale,
+    use24HourTimeFormat: true,
+  });
+
   return readableCron;
 }
 

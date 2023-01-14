@@ -48,5 +48,6 @@ export type CronChangeEvent =
 export interface ReactCronContextType {
   state: CronState;
   dispatch: React.Dispatch<CronChangeEvent>;
-  onChange: (cron: string) => void;
+  onChange: UserOnChange;
 }
+export type UserOnChange = (cron: string, isError: boolean) => void;

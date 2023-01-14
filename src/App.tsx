@@ -8,7 +8,7 @@ function App() {
       <Box display="flex" justifyContent="center" alignItems="center">
         <ReactCron
           initValue="16 19 01,17,18 * *"
-          onChange={(cron) => console.log(cron)}
+          onChange={(cron, error) => console.log(cron, error)}
         />
       </Box>
     </ThemeProvider>
