@@ -71,10 +71,10 @@ http://localhost:5173/
 - src 
     - ReactCron - 程式本體
         - components - 程式元件
-            ├─ Advance 
-            ├─ Daily 
-            ├─ Monthly
-            └─ Weekly 
+            - Advance 
+            - Daily 
+            - Monthly
+            - Weekly 
         - locales - i18n放置處
     - test - 測試放置處
     - Theme
